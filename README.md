@@ -1,13 +1,8 @@
 ### Usage
 
-1. `pip install requirements.txt`
+1. download and install gStore http://www.gstore.cn/pcsite/help-document.html
 2. preprocess data, convert weibodatabase.sql to data.nt: `python processdata.py`
-3. begin gstore service:
-    ```
-    cd gStore && \
-    bin/gbuild weibo ../data.nt && \
-    bin/ghttp weibo 12355
-    ```
+3. begin gstore service: `cd gStore && bin/gbuild weibo ../data.nt && bin/ghttp weibo 12355`
 
 ### files
 
