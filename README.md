@@ -11,8 +11,10 @@
 
 ### files
 
+```
 .
 ├── data.nt -- converted data
+├── gStore/
 ├── main.py -- back end functions
 ├── processdata.log -- generated from processdata.py, which contains all convert-failed lines
 ├── processdata.py -- convert weibodatabase.sql to data.nt
@@ -21,5 +23,4 @@
 ├── utils_gstore.py -- functions for basic manipulations in gStore
 ├── utils_weibo.py -- functions for back end
 └── weibodatabase.sql
-
-### notes
+```
