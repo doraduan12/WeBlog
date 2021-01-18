@@ -67,6 +67,7 @@ def processSqlInserts(tf, text, logger):
                 tf.write("<uid/%s>\t<name>\t<%s>.\n" % (info[0], removelr(info[2])))
                 # tf.write("<uid/%s>\t<pwd>\t<%s>.\n" % (info[0], ''))
                 # tf.write("<uid/%s>\t<email>\t<%s>.\n" % (info[0], ''))
+                tf.write("<uid/%s>\t<loc>\t<%s>.\n" % (info[0], re.sub(' ', '-', info[5])))
                 tf.write("<uid/%s>\t<followersnum>\t<%s>.\n" % (info[0], info[8]))
                 tf.write("<uid/%s>\t<friendsnum>\t<%s>.\n" % (info[0], info[9]))
             elif relation_type == 'userrelation':

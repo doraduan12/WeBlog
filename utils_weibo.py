@@ -5,6 +5,7 @@ time: 2021-01-16 10:32:29
 provide functions for back end
 '''
 
+import re
 import time
 import random
 # from flask import Flask, jsonify
@@ -56,15 +57,30 @@ def _userinfo(gc, uid):
         gc: GstoreConnector
         uid, e.g. '1637970500'
     output:
-        3 dict, e.g. {0: '荒野大飙客---jeep'}, {0: '2390'}, {0: '436'}
+        4 dict, e.g. {0: '荒野大飙客---jeep'}, {0: '2390'}, {0: '436'}, {0: '辽宁-沈阳'}
     '''
     name = dict()
     followersnum = dict()
     friendsnum = dict()
+    loc = dict()
     name[0] = query(gc, ["uid/%s" % uid, "name", ''])[0]
     followersnum[0] = query(gc, ["uid/%s" % uid, "followersnum", ''])[0]
     friendsnum[0] = query(gc, ["uid/%s" % uid, "friendsnum", ''])[0]
-    return name, followersnum, friendsnum
+    loc[0] = query(gc, ["uid/%s" % uid, "loc", ''])[0]
+    return name, followersnum, friendsnum, loc
+
+def _changeinfo(gc, uid, newloc):
+    '''
+    if delete, newloc = ' '
+    if change, newloc = new loc
+    if add, newloc = new loc
+    input:
+        gc: GstoreConnector
+        uid, e.g. '1637970500'
+    output:
+        1 = succeed, 0 = failed
+    '''
+    return insert(gc, ['uid/%d' % uid, 'loc', re.sub(" ", "-", newloc)])
 
 # for requirement 2
 
@@ -85,12 +101,14 @@ def myfollowings(gc, uid):
         uid, e.g. '2494667455'
     output:
         detailed dictionaries of a uid's friends, e.g. {0: '1182391231', 1: '2803301701', 2: '2656274875', 3: '3034112034', 4: '3141880141', 5: '1937187173', 6: '2853316154'}, {0: '潘石屹', 1: '人民日报', 2: '央视新闻', 3: '我们都是甘肃人', 4: '食品界姜昆', 5: '甘肃发布', 6: '王旭江营养师'}, {0: '16856984', 1: '19977043', 2: '18249317', 3: '85475', 4: '14957', 5: '2700471', 6: '1623'}, {0: '90', 1: '272', 2: '172', 3: '529', 4: '2234', 5: '302', 6: '1255'}
+        and location informations
     '''
     flist = _userfollowing(gc, uid)
     uiddict = dict()
     name = dict()
     followersnum = dict()
     friendsnum = dict()
+    loc = dict()
     for i in range(len(flist)):
         fid = flist[i]
         finfo = _userinfo(gc, fid)
@@ -98,7 +116,8 @@ def myfollowings(gc, uid):
         name[i] = finfo[0][0]
         followersnum[i] = finfo[1][0]
         friendsnum[i] = finfo[2][0]
-    return uiddict, name, followersnum, friendsnum
+        loc[i] = finfo[3][0]
+    return uiddict, name, followersnum, friendsnum, loc
 
 def _userweiboid(gc, uid):
     '''
@@ -229,12 +248,14 @@ def myfollower(gc, uid):
         uid, e.g. '2494667455'
     output:
         {0: '3034112034', 1: '1937187173', 2: '3502379363', 3: '1991134077', 4: '2675741931', 5: '1636231703', 6: '2551449930', 7: '1708282850', 8: '3237311842', 9: '3732170811', 10: '1761616465', 11: '1181610342', 12: '2796751050', 13: '2687674807', 14: '1473275170', 15: '2379548461', 16: '1839854235', 17: '2425207004', 18: '1958203793', 19: '1789537050'}, {0: '我们都是甘肃人', 1: '甘肃发布', 2: '刘璟燕lily', 3: '居者不易', 4: 'yiyi太感性', 5: '刘小玉认真每一天', 6: '崛清', 7: '煜子儿', 8: 'XYB快乐成长', 9: '吉他弹给牛听', 10: '月中天', 11: '风向自由', 12: '郭露-_-', 13: '清汤挂面-yy', 14: '三金毛', 15: '苏武魁', 16: '木头鱼冬瓜', 17: '萍客', 18: '长驱直入你的心', 19: '尕荷'}, {0: '85475', 1: '2700471', 2: '84', 3: '474', 4: '522', 5: '510', 6: '473', 7: '3424', 8: '41', 9: '22', 10: '1392', 11: '2386', 12: '411', 13: '117', 14: '608', 15: '20', 16: '489', 17: '538', 18: '970', 19: '667'}, {0: '529', 1: '302', 2: '43', 3: '96', 4: '183', 5: '304', 6: '632', 7: '325', 8: '272', 9: '75', 10: '531', 11: '312', 12: '154', 13: '120', 14: '858', 15: '163', 16: '312', 17: '337', 18: '144', 19: '540'}
+        and location informations
     '''
     flist = query(gc, ['', "userrelation", 'uid/%s' % uid])
     uiddict = dict()
     name = dict()
     followersnum = dict()
     friendsnum = dict()
+    loc = dict()
     for i in range(len(flist)):
         fid = flist[i][4:]
         finfo = _userinfo(gc, fid)
@@ -242,7 +263,8 @@ def myfollower(gc, uid):
         name[i] = finfo[0][0]
         followersnum[i] = finfo[1][0]
         friendsnum[i] = finfo[2][0]
-    return uiddict, name, followersnum, friendsnum
+        loc[i] = finfo[3][0]
+    return uiddict, name, followersnum, friendsnum, loc
 
 def _follow(gc, uid1, uid2):
     '''
