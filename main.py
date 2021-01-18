@@ -24,12 +24,12 @@ def login(email, pwd):
     time_start = time.time()
     gc = GstoreConnector("127.0.0.1", 12355, "root", "123456")
 
-    judge_success = _login(gc, email, pwd)
+    judge_success, uid = _login(gc, email, pwd)
 
     time_end = time.time()
     print('time cost', time_end-time_start, 's')
 
-    return judge_success
+    return judge_success, uid
 
 def register(email, username, pwd):
     '''

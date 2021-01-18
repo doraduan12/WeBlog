@@ -25,10 +25,11 @@ def _login(gc, email, pwd):
         log in status
     '''
     r = query(gc, [email, "pwd", ''])
+    uid = query(gc, ['', "email", email])[0][4:]
     if r[0] == pwd:
-        return 'log in successed'
+        return 'log in successed', uid
     else:
-        return 'wrong password'
+        return 'wrong password', ''
 
 def _register(gc, email, username, pwd):
     '''
