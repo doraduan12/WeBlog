@@ -46,8 +46,9 @@ def _register(gc, email, username, pwd):
     judge_success += insert(gc, ['uid/%d' % uid, 'name', username])
     judge_success += insert(gc, ['uid/%d' % uid, 'email', email])
     judge_success += insert(gc, ['uid/%d' % uid, 'pwd', pwd])
+    judge_success += insert(gc, ['uid/%d' % uid, 'loc', ' '])
     judge_success += insert(gc, [email, 'pwd', pwd])
-    if judge_success == 4:
+    if judge_success == 5:
         return 1
     else:
         return 0
@@ -67,7 +68,7 @@ def _userinfo(gc, uid):
     name[0] = query(gc, ["uid/%s" % uid, "name", ''])[0]
     followersnum[0] = query(gc, ["uid/%s" % uid, "followersnum", ''])[0]
     friendsnum[0] = query(gc, ["uid/%s" % uid, "friendsnum", ''])[0]
-    loc[0] = query(gc, ["uid/%s" % uid, "loc", ''])[0]
+    loc[0] = query(gc, ["uid/%s" % uid, "loc", ''])
     return name, followersnum, friendsnum, loc
 
 def _changeinfo(gc, uid, newloc):
