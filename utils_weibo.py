@@ -68,7 +68,10 @@ def _userinfo(gc, uid):
     name[0] = query(gc, ["uid/%s" % uid, "name", ''])[0]
     followersnum[0] = query(gc, ["uid/%s" % uid, "followersnum", ''])[0]
     friendsnum[0] = query(gc, ["uid/%s" % uid, "friendsnum", ''])[0]
-    loc[0] = query(gc, ["uid/%s" % uid, "loc", ''])
+    try:
+        loc[0] = query(gc, ["uid/%s" % uid, "loc", ''])[0]
+    except:
+        loc[0] = ' ' # in case a new registered user don't have a location
     return name, followersnum, friendsnum, loc
 
 def _changeinfo(gc, uid, newloc):

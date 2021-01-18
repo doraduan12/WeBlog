@@ -19,3 +19,7 @@
 ├── utils_weibo.py -- functions for back end
 └── weibodatabase.sql
 ```
+
+### Notes
+
+1. If update gStore database, must delete with `bin/gdrop weibo` then build again `bin/gbuild weibo ../data.nt`
