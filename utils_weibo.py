@@ -87,7 +87,15 @@ def _changeinfo(gc, uid, newloc):
     output:
         1 = succeed, 0 = failed
     '''
-    return insert(gc, ['uid/%d' % uid, 'loc', re.sub(" ", "-", newloc)])
+    judge_success = 0
+    oldloc = query(gc, ['uid/%s' % uid, 'loc', ''])
+    judge_success += delete(gc, ['uid/%s' % uid, 'loc', oldloc[0]])
+    judge_success += insert(gc, ['uid/%s' % uid, 'loc', re.sub(" ", "-", newloc)])
+    if judge_success == 2:
+        return 1
+    else:
+        return 0
+    return 
 
 # for requirement 2
 
@@ -163,7 +171,7 @@ def userweibo(gc, uid):
         all weibo details of a uid, a json, e.g. {0: '2014-05-04 20:39:13', 1: '2014-05-04 18:56:23', 2: '2014-05-10 17:30:05', 3: '2014-05-11 13:53:43'}, {0: '兰州的房价也不便宜啊！[崩溃][可怜]//@喵小姐的玻璃心: 去兰州买房子吧！', 1: '【4月兰州主城区房屋均价为7479元/㎡ 今年以来第三次下跌】中国指数研究院5月1日发布的数据显示，4月份，中国100个城市(新建)住宅平均价格为每平方米11013元人民币，环比上涨0.10%。兰州方面，4月份，兰州主城区房屋均价为7479元/㎡，环比下跌1.29%。http://t.cn/8sBwadt PS：天水房价会降吗？[思考]', 2: '【兰州治理雾霾水炮霸气亮相[吃惊]】兰州东方红广场，两台军绿色炮筒式的机器引得民众围观。据记者了解，这种治理雾霾的高射远程风送式喷雾机，可将自来水雾化并喷出600米远的水雾，对雾霾、粉尘比较大的施工场地都有除尘及降温的作用。PS：省城的世界咱不懂，感觉高端、大气、上档次的样子！[奥特曼]', 3: '【西安雾炮车、兰州水炮 霸气亮相[吃惊]】近日，一台多功能抑尘车在西安新城区投入使用。而在兰州东方红广场，两台军绿色炮筒式的机器引得民众围观。据悉，此款“神器”在雾霾天可以进行液雾降尘、分解淡化空气中的颗粒浓度、以及降低PM2.5浓度，达到清洁净化空气的效果。PS：高大上的感觉！[奥特曼]'}, {0: '微博 weibo.com', 1: '微博 weibo.com', 2: '微博 weibo.com', 3: '微博 weibo.com'}, {0: '2494667455', 1: '2494667455', 2: '2494667455', 3: '2494667455'}
     '''
     mids = _userweiboid(gc, uid)
-    print(mids)
+    # print(mids)
     date = dict()
     text = dict()
     source = dict()
@@ -277,13 +285,29 @@ def _follow(gc, uid1, uid2):
     '''
     MUST make sure that 1 dose not follow 2 before!
     '''
-    return insert(gc, ['uid/%s' % uid1, 'userrelation', 'uid/%s' % uid2])
+    judge_success = 0
+    judge_success += insert(gc, ['uid/%s' % uid1, 'userrelation', 'uid/%s' % uid2])
+    followernum = int(query(gc, ['uid/%s' % uid2, 'followersnum', ''])[0])
+    judge_success += delete(gc, ['uid/%s' % uid2, 'followersnum', followernum]) # change uid2's follower num
+    judge_success += insert(gc, ['uid/%s' % uid2, 'followersnum', followernum + 1])
+    if judge_success == 3:
+        return 1
+    else:
+        return 0
 
 def _unfollow(gc, uid1, uid2):
     '''
     MUST make sure that 1 followed 2 before!
     '''
-    return delete(gc, ['uid/%s' % uid1, 'userrelation', 'uid/%s' % uid2])
+    judge_success = 0
+    judge_success += delete(gc, ['uid/%s' % uid1, 'userrelation', 'uid/%s' % uid2])
+    followernum = int(query(gc, ['uid/%s' % uid2, 'followersnum', ''])[0])
+    judge_success += delete(gc, ['uid/%s' % uid2, 'followersnum', followernum]) # change uid2's follower num
+    judge_success += insert(gc, ['uid/%s' % uid2, 'followersnum', followernum - 1])
+    if judge_success == 3:
+        return 1
+    else:
+        return 0
 
 # for requirement 4
 
@@ -313,28 +337,30 @@ if __name__ == "__main__":
 
     time_start = time.time()
 
-    print(_register(gc, 'asd@123.com', 'asdasdasd', 'asd123'))
-    print(_login(gc, 'asd@123.com', 'asd123'))
-    print(_login(gc, 'asd@123.com', 'ass123'))
-    print(_login(gc, '1860096194@gstore.com', 'gstore'))
-    print(_userinfo(gc, '1637970500'))
+    # print(_register(gc, 'asd@123.com', 'asdasdasd', 'asd123'))
+    # print(_login(gc, 'asd@123.com', 'asd123'))
+    # print(_login(gc, 'asd@123.com', 'ass123'))
+    # print(_login(gc, '1860096194@gstore.com', 'gstore'))
+    # print(_userinfo(gc, '1637970500'))
 
-    print(_userfollowing(gc, '2494667455'))
-    print(myfollowings(gc, '2494667455'))
-    print(_userweiboid(gc, '2494667455'))
-    print(_getaweibo(gc, '3708732549328579'))
+    # print(_userfollowing(gc, '2494667455'))
+    # print(myfollowings(gc, '2494667455'))
+    # print(_userweiboid(gc, '2494667455'))
+    # print(_getaweibo(gc, '3708732549328579'))
     print(userweibo(gc, '2494667455'))
-    print(_allweiboid(gc, '2494667455'))
-    print(allweibo(gc, '2494667455', page = 0))
-    print(allweibo(gc, '2494667455', page = 10))
-    print(sendweibo(gc, '2494667455', '<><123>'))
+    # print(_allweiboid(gc, '2494667455'))
+    # print(allweibo(gc, '2494667455', page = 0))
+    # print(allweibo(gc, '2494667455', page = 10))
+    print(sendweibo(gc, '2494667455', '<><123>是事实和还得靠拉杀手锏撒客户端凯撒将回答是建行卡'))
+    print(userweibo(gc, '2494667455'))
 
-    print(myfollowings(gc, '2494667455'))
-    print(myfollower(gc, '2494667455'))
-    print(_follow(gc, '2494667455', '1638781994'))
-    print(_unfollow(gc, '2494667455', '1638781994'))
+    # print(myfollowings(gc, '2494667455'))
+    # print(myfollower(gc, '2494667455'))
+    # print(_follow(gc, '2494667455', '1638781994'))
+    # print(_unfollow(gc, '2494667455', '1638781994'))
 
-    print(findrelation(gc, '1994559105', '1692055890'))
+    # print(findrelation(gc, '1994559105', '1692055890'))
+    # print(_changeinfo(gc, '2167418067', 'gst'))
 
     time_end = time.time()
     print('time cost', time_end-time_start, 's')
