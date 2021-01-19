@@ -47,8 +47,10 @@ def _register(gc, email, username, pwd):
     judge_success += insert(gc, ['uid/%d' % uid, 'email', email])
     judge_success += insert(gc, ['uid/%d' % uid, 'pwd', pwd])
     judge_success += insert(gc, ['uid/%d' % uid, 'loc', ' '])
+    judge_success += insert(gc, ['uid/%d' % uid, 'followersnum', 0])
+    judge_success += insert(gc, ['uid/%d' % uid, 'friendsnum', 0])
     judge_success += insert(gc, [email, 'pwd', pwd])
-    if judge_success == 5:
+    if judge_success == 7:
         return 1
     else:
         return 0
