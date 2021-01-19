@@ -142,7 +142,7 @@ def _userweiboid(gc, uid):
     output:
         all weibo mids of a uid, a list, e.g. ['3706605815083743', '3706579930616591', '3708732549328579', '3709040477431142']
     '''
-    return [i[4:] for i in query(gc, ["uid/%s" % uid, "mid", ''])]
+    return sorted([i[4:] for i in query(gc, ["uid/%s" % uid, "mid", ''])], reverse=True)
 
 def _getaweibo(gc, mid):
     '''
