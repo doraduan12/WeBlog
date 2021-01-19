@@ -171,7 +171,7 @@ def userweibo(gc, uid):
         all weibo details of a uid, a json, e.g. {0: '2014-05-04 20:39:13', 1: '2014-05-04 18:56:23', 2: '2014-05-10 17:30:05', 3: '2014-05-11 13:53:43'}, {0: '兰州的房价也不便宜啊！[崩溃][可怜]//@喵小姐的玻璃心: 去兰州买房子吧！', 1: '【4月兰州主城区房屋均价为7479元/㎡ 今年以来第三次下跌】中国指数研究院5月1日发布的数据显示，4月份，中国100个城市(新建)住宅平均价格为每平方米11013元人民币，环比上涨0.10%。兰州方面，4月份，兰州主城区房屋均价为7479元/㎡，环比下跌1.29%。http://t.cn/8sBwadt PS：天水房价会降吗？[思考]', 2: '【兰州治理雾霾水炮霸气亮相[吃惊]】兰州东方红广场，两台军绿色炮筒式的机器引得民众围观。据记者了解，这种治理雾霾的高射远程风送式喷雾机，可将自来水雾化并喷出600米远的水雾，对雾霾、粉尘比较大的施工场地都有除尘及降温的作用。PS：省城的世界咱不懂，感觉高端、大气、上档次的样子！[奥特曼]', 3: '【西安雾炮车、兰州水炮 霸气亮相[吃惊]】近日，一台多功能抑尘车在西安新城区投入使用。而在兰州东方红广场，两台军绿色炮筒式的机器引得民众围观。据悉，此款“神器”在雾霾天可以进行液雾降尘、分解淡化空气中的颗粒浓度、以及降低PM2.5浓度，达到清洁净化空气的效果。PS：高大上的感觉！[奥特曼]'}, {0: '微博 weibo.com', 1: '微博 weibo.com', 2: '微博 weibo.com', 3: '微博 weibo.com'}, {0: '2494667455', 1: '2494667455', 2: '2494667455', 3: '2494667455'}
     '''
     mids = _userweiboid(gc, uid)
-    # print(mids)
+    print(mids)
     date = dict()
     text = dict()
     source = dict()
@@ -243,7 +243,7 @@ def sendweibo(gc, uid, text):
         1 if succeed, 0 if failed
     '''
     judge_success = 0
-    mid = 400000000000000 + int(time.time() * 10000)
+    mid = 4000000000000000 + int(time.time() * 10000)
     judge_success += insert(gc, ['mid/%d' % mid, 'date', str(time.strftime("%Y-%m-%d,%H:%M:%S", time.localtime()))]) # TODO 
     judge_success += insert(gc, ['mid/%d' % mid, 'text', removelr(text)]) # remove <>, which conflicts with triplet languages
     judge_success += insert(gc, ['mid/%d' % mid, 'source', 'Gstore客户端'])
