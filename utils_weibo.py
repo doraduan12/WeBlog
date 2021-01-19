@@ -25,8 +25,8 @@ def _login(gc, email, pwd):
         log in status
     '''
     r = query(gc, [email, "pwd", ''])
-    uid = query(gc, ['', "email", email])[0][4:]
     if r[0] == pwd:
+        uid = query(gc, ['', "email", email])[0][4:]
         return 'log in successed', uid
     else:
         return 'wrong password', ''
@@ -46,7 +46,7 @@ def _register(gc, email, username, pwd):
     judge_success += insert(gc, ['uid/%d' % uid, 'name', username])
     judge_success += insert(gc, ['uid/%d' % uid, 'email', email])
     judge_success += insert(gc, ['uid/%d' % uid, 'pwd', pwd])
-    judge_success += insert(gc, ['uid/%d' % uid, 'loc', ' '])
+    judge_success += insert(gc, ['uid/%d' % uid, 'loc', '北京大学王选计算机研究所'])
     judge_success += insert(gc, ['uid/%d' % uid, 'followersnum', 0])
     judge_success += insert(gc, ['uid/%d' % uid, 'friendsnum', 0])
     judge_success += insert(gc, [email, 'pwd', pwd])
@@ -316,6 +316,7 @@ if __name__ == "__main__":
     print(_register(gc, 'asd@123.com', 'asdasdasd', 'asd123'))
     print(_login(gc, 'asd@123.com', 'asd123'))
     print(_login(gc, 'asd@123.com', 'ass123'))
+    print(_login(gc, '1860096194@gstore.com', 'gstore'))
     print(_userinfo(gc, '1637970500'))
 
     print(_userfollowing(gc, '2494667455'))

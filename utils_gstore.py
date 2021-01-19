@@ -161,15 +161,18 @@ def multihopquery(gc, s, e, num):
 if __name__ == "__main__":
 
     gc = GstoreConnector("127.0.0.1", 12355, "root", "123456")
-
     # res = query(gc, ['uid/1836546175', 'userrelation', ''])
     # res = insert(gc, ['a', 'b', 'd'])
 
-    # res = query(gc, ['a', 'b', ''])
+    res = query(gc, ['uid/1860096194', 'email', ''])
+    # res = query(gc, ['uid/1860096194', 'loc', ''])
+    # res = query(gc, ['uid/1860096194', 'pwd', ''])
+    res = query(gc, ['1860096194@gstore.com', 'pwd', ''])
+    # res = query(gc, ['uid/1860096194', 'name', ''])
 
-    res = multihopquery(gc, '1994559105', '5014897108', 1)
-    res = multihopquery(gc, '1994559105', '1692055890', 1)
-    res = multihopquery(gc, '1994559105', '1692055890', 2)
-    res = multihopquery(gc, '1994559105', '1692055890', 3)
-    res = multihopquery(gc, '1994559105', '1692055890', 4)
+    # res = multihopquery(gc, '1994559105', '5014897108', 1)
+    # res = multihopquery(gc, '1994559105', '1692055890', 1)
+    # res = multihopquery(gc, '1994559105', '1692055890', 2)
+    # res = multihopquery(gc, '1994559105', '1692055890', 3)
+    # res = multihopquery(gc, '1994559105', '1692055890', 4)
     
