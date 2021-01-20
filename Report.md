@@ -5,20 +5,18 @@
 
 本项目Web框架选择为Flask，后端开发语言为Python，前端使用HTML+CSS+JavaScript实现，数据库使用图数据库系统gstore，在本地完成部署后可直接通过浏览器访问。
 
-
-
 ### 1.2 概念模型
 
-
-#TODO
-
+- 底层：gStore 查询接口
+- 中层：功能操作，动作接口
+- 上层：网页调用接口
+- 表层：网页的展示与互动
 
 ## 2.系统架构
 
 <img src="./pictures/web.png" alt="web" style="zoom:80%;" />
 
 由于项目未部署上线，所以所有内容都在本地。首先需要开启gstore服务，然后运行基于Flask的server，便可以在本地浏览器访问页面并通过HTTP请求服务。
-
 
 ## 3 关键代码
 
