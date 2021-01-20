@@ -49,8 +49,7 @@ def processSqlInserts(tf, text, logger):
         logger: write logs
     output: write <><><> triplets directly
     NOTE: 
-        1. part of user and weibo informations are omitted, #TODO
-        2. 
+        1. part of user and weibo informations are omitted
     '''
     sql_lst = text.split("\n")
     for i in tqdm(range(len(sql_lst))):

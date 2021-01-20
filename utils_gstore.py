@@ -53,8 +53,6 @@ def insert(gc, triplet):
     '''
     insert a triplet into db
     '''
-    #TODO: judge valid
-    #TODO: judge if is exist
     sql = '''
     INSERT DATA
         { 
@@ -70,7 +68,6 @@ def delete(gc, triplet):
     '''
     find and delete a triplet from db
     '''
-    #TODO: judge valid
     sql = '''
     DELETE DATA
         { 
